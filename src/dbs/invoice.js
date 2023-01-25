@@ -18,12 +18,12 @@ module.exports = {
     return model.create(invoice)
   },
   /**
-   * Call mongodb for getting an invoice by login
-   * @param {String} login The login to search
-   * @return {invoice} The invoice found or null
+   * Call mongodb for getting an invoice by id
+   * @param {String} id The id to search
+   * @return {invoice[]} The invoice found or null
    **/
-  get_invoice_by_login: (login) => {
-    return model.findOne({ $or: [{ email: login }, { invoicename: login }] })
+  get_invoice: () => {
+    return model.find()
   },
   /**
    * Call mongodb for getting an invoice by id
@@ -32,6 +32,14 @@ module.exports = {
    **/
   get_invoice_by_id: (id) => {
     return model.findOne({ _id: id })
+  },
+  /**
+   * Call mongodb for removing an invoice by id
+   * @param {String} id The id to search
+   * @return {invoice} The invoice found or null
+   **/
+  delete_invoice_by_id: (id) => {
+    return model.remove({ _id: id })
   },
   /**
    * Call mongodb for inserting many
@@ -49,13 +57,5 @@ module.exports = {
    **/
   update_by_id: (_id, update) => {
     return model.findOneAndUpdate({ _id: _id }, update, { new: true })
-  },
-  /**
-   * Call mongodb for testing the existence of an invoice by email
-   * @param {String} invoicename The invoicename to search
-   * @return {boolean} True if a document exist or else False
-   **/
-  test_invoice_by_email: (email) => {
-    return model.exists({ email: email })
   }
 }

@@ -1,6 +1,6 @@
 /**
- * The models of the config
- * @module models/config
+ * The models of the product
+ * @module models/product
  */
 'use strict'
 
@@ -10,20 +10,16 @@ const filename = path.basename(__filename, '.js')
 
 const schema = new mongoose.Schema(
   {
-    password_minimum_character: {
+    name: {
+      type: String,
+      required: true
+    },
+    quantity: {
       type: Number,
       required: true
     },
-    password_restriction: [
-      {
-        type: String,
-        enum: ['has_lowercase', 'has_uppercase', 'has_number', 'has_enough_length'],
-        required: true
-      }
-    ],
-    default_user_type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user_type',
+    price: {
+      type: Number,
       required: true
     }
   },

@@ -1,7 +1,7 @@
 /**
-* Set of global functions or response about response
-* @module libs/response
-*/
+ * Set of global functions or response about response
+ * @module libs/response
+ */
 'use strict'
 
 module.exports = {
@@ -15,7 +15,13 @@ module.exports = {
    * @param {Function} res - The response for express
    */
   success: (res) => {
-    res.status(500).json({ message: 'Success' })
+    res.status(200).json({ message: 'Success' })
+  },
+  /**
+   * @param {Function} res - The response for express
+   */
+  created: (res) => {
+    res.status(201).json({ message: 'Successful on creating' })
   },
   /**
    * @param {Function} res - The response for express

@@ -31,10 +31,11 @@ module.exports = {
    * @return {Object} The payload
    **/
   create_payload: (user) => {
+    console.log(user)
     return {
       date_given: Date.now(),
       id: user._id,
-      company_id: user.company_id
+      name: user.name
     }
   },
   /**

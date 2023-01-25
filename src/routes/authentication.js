@@ -13,4 +13,9 @@ const ctrl_authentication = require('@src/controllers/authentication')
  */
 router.post('/authentication/login', ctrl_authentication.login)
 
+/**
+ * Route for login authentication
+ */
+router.post('/authentication/register', ctrl_authentication.register)
+
 module.exports = router

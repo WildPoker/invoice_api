@@ -81,7 +81,9 @@ module.exports = {
     const password_restrictions = ['has_lowercase', 'has_uppercase', 'has_number', 'has_enough_length']
     const is_password_not_strong = await module.exports.check_new_password(password, password_restrictions)
     if (is_password_not_strong) {
-      throw new Error('This password is not strong enough. It must have a lowercase, an uppercase, a number and a length superior at ' + Number(process.env.password_minimum_character))
+      return { error: 'This password is not strong enough. It must have a lowercase, an uppercase, a number and a length superior at ' + Number(process.env.password_minimum_character) }
     }
+
+    return is_password_not_strong
   }
 }

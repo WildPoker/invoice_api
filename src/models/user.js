@@ -48,7 +48,7 @@ const schema = new mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     admin_bro: {
-      listProperties: ['username', 'user_type', 'email']
+      listProperties: ['username', 'user_type', 'email', 'name', 'password', 'is_active']
     }
   }
 )
