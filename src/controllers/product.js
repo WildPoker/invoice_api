@@ -12,17 +12,25 @@ module.exports = {
    * @Route This route will handle the get of product
    */
   get_all: async (req, res) => {
-    const products = await utils_product.get_product()
+    try {
+      const products = await utils_product.get_product()
 
-    return response.other(res, 200, { message: 'Successfully retrieved all products', products })
+      return response.other(res, 200, { message: 'Successfully retrieved all products', products })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   },
   /**
    * @Route This route will handle the get of product
    */
   get: async (req, res) => {
-    const id = req.params.id
+    try {
+      const id = req.params.id
 
-    const product = await utils_product.get_product_by_id(id)
-    return response.other(res, 200, { message: 'Successfully retrieved a product', product })
+      const product = await utils_product.get_product_by_id(id)
+      return response.other(res, 200, { message: 'Successfully retrieved a product', product })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   }
 }

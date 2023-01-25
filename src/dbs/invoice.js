@@ -22,8 +22,8 @@ module.exports = {
    * @param {String} id The id to search
    * @return {invoice[]} The invoice found or null
    **/
-  get_invoice: () => {
-    return model.find()
+  get_invoice: (id) => {
+    return model.find({ invoice_user: id })
   },
   /**
    * Call mongodb for getting an invoice by id
@@ -32,6 +32,16 @@ module.exports = {
    **/
   get_invoice_by_id: (id) => {
     return model.findOne({ _id: id })
+  },
+  /**
+   * Call mongodb for getting an invoice by id
+   * @return {invoice[]} The invoice found or null
+   **/
+  populate_invoice: (data) => {
+    return model.populate(data, [
+      { path: 'invoice_user', select: 'name email' },
+      { path: 'products_acquisition', populate: 'product' }
+    ])
   },
   /**
    * Call mongodb for removing an invoice by id

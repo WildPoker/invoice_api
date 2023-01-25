@@ -23,8 +23,8 @@ module.exports = {
    * Get an invoice by id
    * @return {Object[]} The invoice found or null
    **/
-  get_invoice: async () => {
-    return await dbs.get_invoice()
+  get_invoice: async (id) => {
+    return await dbs.get_invoice(id)
   },
   /**
    * @param {Object} args - Containing the info of the invoice
@@ -49,6 +49,13 @@ module.exports = {
       return { error: 'The id you provided is invalid' }
     }
     return invoice
+  },
+  /**
+   * populate an invoice
+   * @return {Object} The invoice found or null
+   **/
+  populate_invoice: async (data) => {
+    return await dbs.populate_invoice(data)
   },
   /**
    * Test if the invoice is an instance of invoice

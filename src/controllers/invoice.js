@@ -15,73 +15,95 @@ module.exports = {
    * @Route This route will handle the create of invoice
    */
   create: async (req, res) => {
-    const args = req.body
-    const rn_length = 6
-    const rn_pattern = '000'
+    try {
+      const args = req.body
+      const rn_length = 6
+      const rn_pattern = '000'
 
-    args.invoice_number = rn(rn_length, rn_pattern)
-    args.invoice_user = (await utils_authentication.verify_token_from_header(req.headers)).id
-    const products_acquisition = await Promise.all(
-      args.products_acquisition.map((id) => {
-        return utils_product_acquisition.get_product_acquisition_by_id(id)
-      })
-    )
+      args.invoice_number = rn(rn_length, rn_pattern)
+      args.invoice_user = (await utils_authentication.verify_token_from_header(req.headers)).id
+      const products_acquisition = await Promise.all(
+        args.products_acquisition.map((id) => {
+          return utils_product_acquisition.get_product_acquisition_by_id(id)
+        })
+      )
 
-    args.total_amount = products_acquisition.reduce((a, b) => +a + +b.price, 0)
-    const created_product_acquisition = await utils_invoice.add_invoice(args)
-    return response.other(res, 200, { message: 'Successfully Created a invoice', created_product_acquisition })
+      args.total_amount = products_acquisition.reduce((a, b) => +a + +b.price, 0)
+      const created_product_acquisition = await utils_invoice.add_invoice(args)
+      return response.other(res, 200, { message: 'Successfully Created a invoice', created_product_acquisition })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   },
   /**
    * @Route This route will handle the create of invoice
    */
   edit: async (req, res) => {
-    const args = req.body
-    const invoice_id = req.params.id
+    try {
+      const args = req.body
+      const invoice_id = req.params.id
 
-    const user_id = (await utils_authentication.verify_token_from_header(req.headers)).id
+      const user_id = (await utils_authentication.verify_token_from_header(req.headers)).id
 
-    const invoice = await utils_invoice.get_invoice_by_id(invoice_id)
+      const invoice = await utils_invoice.get_invoice_by_id(invoice_id)
 
-    if (invoice.invoice_user.toString() !== user_id) {
-      return response.other(res, 403, { message: 'You do not have the authority to edit this invoice' })
+      if (invoice.invoice_user.toString() !== user_id) {
+        return response.other(res, 403, { message: 'You do not have the authority to edit this invoice' })
+      }
+
+      const products_acquisition = await Promise.all(
+        args.products_acquisition.map((id) => {
+          return utils_product_acquisition.get_product_acquisition_by_id(id)
+        })
+      )
+
+      args.invoice_id = invoice_id
+      args.total_amount = products_acquisition.reduce((a, b) => +a + +b.price, 0)
+      const updated_product_acquisition = await utils_invoice.update_invoice_by_id(invoice.id, args)
+      return response.other(res, 200, { message: 'Successfully updated a invoice', updated_product_acquisition })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
     }
-
-    const products_acquisition = await Promise.all(
-      args.products_acquisition.map((id) => {
-        return utils_product_acquisition.get_product_acquisition_by_id(id)
-      })
-    )
-
-    args.invoice_id = invoice_id
-    args.total_amount = products_acquisition.reduce((a, b) => +a + +b.price, 0)
-    const updated_product_acquisition = await utils_invoice.update_invoice_by_id(invoice.id, args)
-    console.log(updated_product_acquisition)
-    return response.other(res, 200, { message: 'Successfully updated a invoice', updated_product_acquisition })
   },
   /**
    * @Route This route will handle the get of invoice
    */
   get_all: async (req, res) => {
-    const invoices = await utils_invoice.get_invoice()
+    try {
+      const user_id = (await utils_authentication.verify_token_from_header(req.headers)).id
+      const invoices = await utils_invoice.get_invoice(user_id)
+      const populated_invoice = await utils_invoice.populate_invoice(invoices)
 
-    return response.other(res, 200, { message: 'Successfully retrieved all invoice', invoices })
+      return response.other(res, 200, { message: 'Successfully retrieved all invoice', invoices: populated_invoice })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   },
   /**
    * @Route This route will handle the get of invoice
    */
   get: async (req, res) => {
-    const id = req.params.id
+    try {
+      const id = req.params.id
 
-    const invoice = await utils_invoice.get_invoice_by_id(id)
-    return response.other(res, 200, { message: 'Successfully retrieved a invoice', invoice })
+      const invoice = await utils_invoice.get_invoice_by_id(id)
+      const populated_invoice = await utils_invoice.populate_invoice(invoice)
+      return response.other(res, 200, { message: 'Successfully retrieved a invoice', invoice: populated_invoice })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   },
   /**
    * @Route This route will handle the get of invoice
    */
   delete: async (req, res) => {
-    const id = req.params.id
+    try {
+      const id = req.params.id
 
-    await utils_invoice.delete_invoice_by_id(id)
-    return response.other(res, 200, { message: 'Successfully deleted a invoice' })
+      await utils_invoice.delete_invoice_by_id(id)
+      return response.other(res, 200, { message: 'Successfully deleted a invoice' })
+    } catch (error) {
+      return response.error(res, 400, 'Fail to request')
+    }
   }
 }

@@ -41,6 +41,13 @@ module.exports = {
     return product_acquisition
   },
   /**
+   * populate an product_acquisition
+   * @return {Object} The product_acquisition found or null
+   **/
+  populate_product_acquisition: async (data) => {
+    return await dbs.populate_product_acquisition(data)
+  },
+  /**
    * Test if the product_acquisition is an instance of product_acquisition
    * @param {Object} product_acquisition The object product_acquisition to test
    * @return {boolean} True if it's an object product_acquisition or else false

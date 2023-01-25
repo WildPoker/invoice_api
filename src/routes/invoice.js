@@ -29,4 +29,5 @@ router.get('/invoice/:id', isLoggedIn, ctrl_invoice.get)
  * Route for delete invoice
  */
 router.delete('/invoice/:id', isLoggedIn, ctrl_invoice.delete)
+
 module.exports = router

@@ -31,7 +31,6 @@ module.exports = {
    * @return {Object} The payload
    **/
   create_payload: (user) => {
-    console.log(user)
     return {
       date_given: Date.now(),
       id: user._id,

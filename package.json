@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=production && node --max-old-space-size=4096 src/index",
-    "start:nodemon": "set NODE_ENV=production && nodemon --max-old-space-size=4096 ./src/index",
-    "seed": "set NODE_ENV=production && node seeding/seeder",
+    "start": "export NODE_ENV=production && node --max-old-space-size=4096 src/index",
+    "start:nodemon": "export NODE_ENV=production && nodemon --max-old-space-size=4096 ./src/index",
+    "seed": "export NODE_ENV=production && node seeding/seeder",
     "lint": "xo",
     "linter": "eslint --fix './src/**/*.js'",
     "linter:seed": "eslint --fix ./seeding/**/*.js"

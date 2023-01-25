@@ -28,6 +28,14 @@ module.exports = {
   /**
    * Call mongodb for getting an product_acquisition by id
    * @param {String} id The id to search
+   * @return {product_acquisition[]} The product_acquisition found or null
+   **/
+  populate_product_acquisition: (data) => {
+    return model.populate(data, ['product'])
+  },
+  /**
+   * Call mongodb for getting an product_acquisition by id
+   * @param {String} id The id to search
    * @return {product_acquisition} The product_acquisition found or null
    **/
   get_product_acquisition_by_id: (id) => {
