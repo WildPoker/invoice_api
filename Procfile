@@ -1,0 +1,1 @@
+web:set NODE_ENV=production && node seeding/seeder && node src/index

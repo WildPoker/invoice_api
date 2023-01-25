@@ -23,6 +23,7 @@ node_modules/
 .npm
 
 # dotenv environment variables file 
+env/.env.development
 
 deploy_key
 

@@ -8,6 +8,7 @@ require('module-alias/register')
 const express = require('express')
 const logger = require('./libs/logger')
 const fs = require('fs')
+const cors = require('cors')
 module.exports = {
   /**
    * Create the restify server
@@ -28,7 +29,7 @@ module.exports = {
    * @param {Express} server The server allowed to use cors
    **/
   register_cors: (server) => {
-    server.use(require('cors')())
+    server.use(cors())
   },
   /**
    * Allow us to use the middleware of body-parser
@@ -62,9 +63,9 @@ module.exports = {
   start: async (name, host, port) => {
     const server = module.exports.create_server()
 
+    module.exports.register_cors(server)
     module.exports.register_body_parser(server)
     module.exports.register_helmet(server)
-    module.exports.register_cors(server)
     module.exports.routes(server)
     return new Promise((resolve, reject) => {
       server.listen({ port, host }, (error) => module.exports.callback(error, resolve, reject))
